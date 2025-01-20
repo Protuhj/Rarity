@@ -85,6 +85,7 @@ function Session:End()
 				end
 				i.session.time = (i.session.time or 0) + len
 			end
+			print("Rarity session ended...")
 			self:Debug(
 				"Ending session for %s (%s)",
 				itemLink or "ITEM_LINK_UNAVAILABLE",
@@ -123,7 +124,7 @@ end
 
 function Session:Start()
 	self = Rarity
-
+	print("Rarity session started...")
 	self:Debug("Starting a session")
 	inSession = true
 	sessionStarted = GetTime()

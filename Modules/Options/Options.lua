@@ -1718,6 +1718,36 @@ end -- function R:PrepareOptions()
 -- ITEM GROUPS
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local function serializeTable(val, name, skipnewlines, depth)
+    skipnewlines = skipnewlines or false
+    depth = depth or 0
+
+    local tmp = string.rep(" ", depth)
+
+    if name and type(name) ~= "number" then tmp = tmp .. name .. " = " end
+
+    if type(val) == "table" then
+        tmp = tmp .. "{" .. (not skipnewlines and "\n" or "")
+
+        for k, v in pairs(val) do
+            tmp =  tmp .. serializeTable(v, k, skipnewlines, depth + 1) .. "," .. (not skipnewlines and "\n" or "")
+        end
+
+        tmp = tmp .. string.rep(" ", depth) .. "}"
+    elseif type(val) == "number" then
+        tmp = tmp .. tostring(val)
+    elseif type(val) == "string" then
+        tmp = tmp .. string.format("%q", val)
+    elseif type(val) == "boolean" then
+        tmp = tmp .. (val and "true" or "false")
+    else
+        tmp = tmp .. "\"[inserializeable datatype:" .. type(val) .. "]\""
+    end
+
+    return tmp
+end
+
+
 function R:CreateGroup(options, group, isUser)
 	options.args = {
 		name = {
@@ -2217,6 +2247,42 @@ function R:CreateGroup(options, group, isUser)
 					end,
 					hidden = function()
 						if item.method == ZONE or item.method == FISHING then
+							return false
+						else
+							return true
+						end
+					end,
+					disabled = not isUser,
+				},
+				coords = {
+					type = "input",
+					order = newOrder(),
+					width = "double",
+					name = "Coords",
+					desc = "Must be a valid table, e.g. { { m = 50 } } or { { m = 50 }, { m = 51 } }",
+					set = function(info, val)
+						if strtrim(val) == "" then
+							item.coords = nil
+						else
+							func, errormsg = loadstring("return " .. val)
+							if func then
+								item.coords = func()
+							else
+								alert("Invalid lua? " .. errormsg);
+							end
+						end
+						self:Update("OPTIONS")
+					end,
+					get = function(into)
+						if item.coords and type(item.coords) == "table" then
+							local s = serializeTable(item.coords, nil, true)
+							return s
+						else
+							return ""
+						end
+					end,
+					hidden = function()
+						if item.method == NPC then
 							return false
 						else
 							return true
