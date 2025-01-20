@@ -185,7 +185,7 @@ function GUI:UpdateText()
 	if chance < 0 then
 		chance = 0
 	end
-	local text = format("%s: %d (%.2f%%)", itemName or trackedItem.name, attempts, chance)
+	local text = format("%s: %d (%.2f%%)", itemName or trackedItem.name or "Unknown", attempts, chance)
 	if not self.bar then
 		self.bar = self.barGroup:NewCounterBar(
 			"Track",
