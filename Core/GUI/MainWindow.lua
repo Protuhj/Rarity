@@ -47,6 +47,7 @@ local SORT_DIFFICULTY = CONSTANTS.SORT_METHODS.SORT_DIFFICULTY
 local SORT_PROGRESS = CONSTANTS.SORT_METHODS.SORT_PROGRESS
 local SORT_CATEGORY = CONSTANTS.SORT_METHODS.SORT_CATEGORY
 local SORT_ZONE = CONSTANTS.SORT_METHODS.SORT_ZONE
+local SORT_TIME = CONSTANTS.SORT_METHODS.SORT_TIME
 -- Tooltip formatting
 local TIP_LEFT = "TIP_LEFT"
 local TIP_RIGHT = "TIP_RIGHT"
@@ -1368,6 +1369,8 @@ function GUI:SelectNextSortOrder()
 		R.db.profile.sortMode = SORT_PROGRESS
 	elseif R.db.profile.sortMode == SORT_PROGRESS then
 		R.db.profile.sortMode = SORT_ZONE
+	elseif R.db.profile.sortMode == SORT_ZONE then
+		R.db.profile.sortMode = SORT_TIME
 	else
 		R.db.profile.sortMode = SORT_NAME
 	end
@@ -1468,6 +1471,8 @@ function R:ShowTooltip(hidden)
 		sortDesc = L["Sorting by category, then name"]
 	elseif self.db.profile.sortMode == SORT_ZONE then
 		sortDesc = L["Sorting by zone"]
+    elseif self.db.profile.sortMode == SORT_TIME then
+		sortDesc = L["Sorting by time"]
 	elseif self.db.profile.sortMode == SORT_NONE then
 		sortDesc = L["Sorting is disabled"]
 	end

@@ -150,6 +150,25 @@ local function compareZone(a, b)
 	return (zoneTextA or "") < (zoneTextB or "")
 end
 
+local function compareTime(a, b)
+	if not a or not b then
+		return 0
+	end
+	if type(a) ~= "table" or type(b) ~= "table" then
+		return 0
+	end
+	-- Greatest to least parses easier, I think
+	aTime = a.time or 0
+	if a.lastTime then
+		aTime = aTime - a.lastTime
+	end
+	bTime = b.time or 0
+	if b.lastTime then
+		bTime = bTime - b.lastTime
+	end
+	return (aTime or 0) > (bTime or 0)
+end
+
 function Sorting:SortGroup(group, method)
 	if method == CONSTANTS.SORT_METHODS.SORT_NONE then
 		return self:DebugNoOp(group)
@@ -167,6 +186,8 @@ function Sorting:SortGroup(group, method)
 		sortedGroup = self:sort_zone(group)
 	elseif method == CONSTANTS.SORT_METHODS.SORT_PROGRESS then
 		sortedGroup = self:sort_progress(group)
+    elseif method == CONSTANTS.SORT_METHODS.SORT_TIME then
+		sortedGroup = self:sort_time(group)
 	end
 	Rarity.Profiling:EndTimer("SortGroup")
 
@@ -223,6 +244,10 @@ end
 
 function Sorting:sort_zone(t)
 	return sort_copy_with(t, compareZone)
+end
+
+function Sorting:sort_time(t)
+	return sort_copy_with(t, compareTime)
 end
 
 Rarity.Utils.Sorting = Sorting
