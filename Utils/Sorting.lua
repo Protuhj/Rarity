@@ -150,22 +150,45 @@ local function compareZone(a, b)
 	return (zoneTextA or "") < (zoneTextB or "")
 end
 
+local function normalizeTime(object)
+	if not object then
+		return 0
+	end
+	if type(object) ~= "table" then
+		return 0
+	end
+	method = object.method or ""
+	-- The display logic will hide the time for these, resulting in entries in the middle of others, without a displayed time
+	if
+		method ~= CONSTANTS.DETECTION_METHODS.NPC
+		and method ~= CONSTANTS.DETECTION_METHODS.ZONE
+		and method ~= CONSTANTS.DETECTION_METHODS.FISHING
+		and method ~= CONSTANTS.DETECTION_METHODS.USE
+	then
+		return 0
+	end
+	attempts = object.attempts or 0
+	if object.lastAttempts then
+		attempts = attempts - object.lastAttempts
+	end
+	if attempts <= 0 then
+		return 0
+	end
+	-- END normalization for display logic
+	retTime = object.time or 0
+	if object.lastTime then
+		retTime = retTime - object.lastTime
+	end
+	if retTime < 0 then
+		return 0
+	end
+	return retTime
+end
+
+-- Sorts time from greatest to least, as it renders better (visually) than least to greatest
 local function compareTime(a, b)
-	if not a or not b then
-		return 0
-	end
-	if type(a) ~= "table" or type(b) ~= "table" then
-		return 0
-	end
-	-- Greatest to least parses easier, I think
-	aTime = a.time or 0
-	if a.lastTime then
-		aTime = aTime - a.lastTime
-	end
-	bTime = b.time or 0
-	if b.lastTime then
-		bTime = bTime - b.lastTime
-	end
+	aTime = normalizeTime(a)
+	bTime = normalizeTime(b)
 	return (aTime or 0) > (bTime or 0)
 end
 

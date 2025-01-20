@@ -56,6 +56,7 @@ local sort_difficulty = Rarity.Utils.Sorting.sort_difficulty
 local sort_category = Rarity.Utils.Sorting.sort_category
 local sort_zone = Rarity.Utils.Sorting.sort_zone
 local sort_progress = Rarity.Utils.Sorting.sort_progress
+local sort_time = Rarity.Utils.Sorting.sort_time
 local GetDate = Rarity.Utils.Time.GetDate
 local AuctionDB = Rarity.AuctionDB
 
