@@ -209,7 +209,7 @@ function Sorting:SortGroup(group, method)
 		sortedGroup = self:sort_zone(group)
 	elseif method == CONSTANTS.SORT_METHODS.SORT_PROGRESS then
 		sortedGroup = self:sort_progress(group)
-    elseif method == CONSTANTS.SORT_METHODS.SORT_TIME then
+	elseif method == CONSTANTS.SORT_METHODS.SORT_TIME then
 		sortedGroup = self:sort_time(group)
 	end
 	Rarity.Profiling:EndTimer("SortGroup")

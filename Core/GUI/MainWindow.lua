@@ -1471,7 +1471,7 @@ function R:ShowTooltip(hidden)
 		sortDesc = L["Sorting by category, then name"]
 	elseif self.db.profile.sortMode == SORT_ZONE then
 		sortDesc = L["Sorting by zone"]
-    elseif self.db.profile.sortMode == SORT_TIME then
+	elseif self.db.profile.sortMode == SORT_TIME then
 		sortDesc = L["Sorting by time"]
 	elseif self.db.profile.sortMode == SORT_NONE then
 		sortDesc = L["Sorting is disabled"]
