@@ -3,6 +3,10 @@ local addonName, addonTable = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local CONSTANTS = addonTable.constants
 
+if LE_EXPANSION_LEVEL_CURRENT < LE_EXPANSION_SHADOWLANDS then
+	return {}
+end
+
 local shadowlandsPets = {
 	-- 9.0 Pets
 	["Feasting Larva"] = {
@@ -774,8 +778,11 @@ local shadowlandsPets = {
 		spellId = 353525,
 		creatureId = 179166,
 		npcs = { 175646 },
-		chance = 100, -- Blind guess
-		instanceDifficulties = { [CONSTANTS.INSTANCE_DIFFICULTIES.MYTHIC_DUNGEON] = true },
+		chance = 10,
+		instanceDifficulties = {
+			[CONSTANTS.INSTANCE_DIFFICULTIES.HEROIC_DUNGEON] = true,
+			[CONSTANTS.INSTANCE_DIFFICULTIES.MYTHIC_DUNGEON] = true,
+		},
 		coords = { { m = CONSTANTS.UIMAPIDS.TAZAVESH_THE_VEILED_MARKET, n = L["P.O.S.T. Master"] } },
 	},
 	["Invasive Buzzer"] = {
@@ -940,3 +947,4 @@ local shadowlandsPets = {
 }
 
 Rarity.ItemDB.MergeItems(Rarity.ItemDB.pets, shadowlandsPets)
+return shadowlandsPets

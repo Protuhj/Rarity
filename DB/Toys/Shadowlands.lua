@@ -3,6 +3,10 @@ local addonName, addonTable = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local CONSTANTS = addonTable.constants
 
+if LE_EXPANSION_LEVEL_CURRENT < LE_EXPANSION_SHADOWLANDS then
+	return {}
+end
+
 local shadowlandsToys = {
 	-- 9.0 Toys
 	["Borr-Geth's Fiery Brimstone"] = {
@@ -311,7 +315,7 @@ local shadowlandsToys = {
 	},
 	["Wilderling Saddle"] = {
 		cat = CONSTANTS.ITEM_CATEGORIES.SHADOWLANDS,
-		type = CONSTANTS.ITEM_TYPES.ITEMS,
+		type = CONSTANTS.ITEM_TYPES.ITEM,
 		method = CONSTANTS.DETECTION_METHODS.LOOT_TOAST, -- This method doesn't exist, it's effectively SPECIAL but with a better name
 		name = L["Wilderling Saddle"],
 		itemId = 187281,
@@ -542,3 +546,4 @@ local shadowlandsToys = {
 }
 
 Rarity.ItemDB.MergeItems(Rarity.ItemDB.toys, shadowlandsToys)
+return shadowlandsToys

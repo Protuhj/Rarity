@@ -3,6 +3,10 @@ local addonName, addonTable = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local CONSTANTS = addonTable.constants
 
+if LE_EXPANSION_LEVEL_CURRENT < LE_EXPANSION_DRAGONFLIGHT then
+	return {}
+end
+
 local dragonflightMounts = {
 	-- 10.0 mounts
 	["Reins of the Liberated Slyvern"] = {
@@ -305,7 +309,7 @@ local dragonflightMounts = {
 		type = CONSTANTS.ITEM_TYPES.MOUNT,
 		method = CONSTANTS.DETECTION_METHODS.BOSS,
 		name = L["Reins of Anu'relos, Flame's Guidance"],
-		spellId = 428195,
+		spellId = 424484,
 		itemId = 210061,
 		npcs = { 99999 },
 		tooltipNpcs = { 204931 },
@@ -335,3 +339,4 @@ local dragonflightMounts = {
 }
 
 Rarity.ItemDB.MergeItems(Rarity.ItemDB.mounts, dragonflightMounts)
+return dragonflightMounts

@@ -1,14 +1,8 @@
-**r739:**
-
-Additions:
-> Added Siren Isle collectibles to the database
-
-Changes:
-> Rarity now uses kill statistics for Queen Ansurek (Reins of the Sureki Skyrazor)
+**r748:**
 
 Fixes:
-> Recorded times should once again be displayed correctly in the main window
+> Anu'relos, Flame's Guidance should now correctly be detected once obtained
+<br>Brewfest Barrel Bomber should no longer be tracked in MOP Classic
 
 Contributors (in alphabetical order):
-> Protuhj
-<br>Ellezanor
+> Ellezanor

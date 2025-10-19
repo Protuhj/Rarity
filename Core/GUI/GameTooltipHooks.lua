@@ -220,27 +220,6 @@ local function onTooltipSetUnit(tooltip, data)
 
 	-- blankAdded = false -- Why?
 
-	-- NPC is required for an achievement
-	if Rarity.ach_npcs_achId[name] then
-		local link = GetAchievementLink(Rarity.ach_npcs_achId[name])
-		if not blankAdded and R.db.profile.blankLineBeforeTooltipAdditions then
-			blankAdded = true
-			GameTooltip:AddLine(" ")
-		end
-		if not Rarity.ach_npcs_isKilled[name] then
-			GameTooltip:AddLine(
-				colorize((not rarityAdded and L["Rarity: "] or ""), yellow)
-					.. colorize(format(L["Required for %s"], link), green)
-			)
-		else
-			GameTooltip:AddLine(
-				colorize((not rarityAdded and L["Rarity: "] or ""), yellow)
-					.. colorize(format(L["Already defeated for %s"], link), red)
-			)
-		end
-		rarityAdded = true
-	end
-
 	-- This whole zone is used for obtaining something
 	if not UnitCanAttack("player", unit) then
 		return
@@ -375,7 +354,11 @@ local function onTooltipSetUnit(tooltip, data)
 	end
 end
 
-_G.TooltipDataProcessor.AddTooltipPostCall(_G.Enum.TooltipDataType.Unit, onTooltipSetUnit)
+if not _G.TooltipDataProcessor then
+	-- Blizzard hasn't ported the tooltip changes to their classic client, yet?
+else
+	_G.TooltipDataProcessor.AddTooltipPostCall(_G.Enum.TooltipDataType.Unit, onTooltipSetUnit)
+end
 
 local function processItem(id, tooltip)
 	local blankAdded = false
@@ -523,18 +506,25 @@ local function processItem(id, tooltip)
 end
 
 local function onTooltipSetItem(tooltip, tooltipData)
+	if not R.db or R.db.profile.enableTooltipAdditions == false then
+		return
+	end
+
 	if tooltip ~= _G.GameTooltip and tooltip ~= _G.ItemRefTooltip then
 		return
 	end
 
-	local itemLink = tooltipData.hyperlink
-	if type(itemLink) ~= "string" then
+	local itemID = tooltipData.id
+	if not itemID then
+		Rarity:Debug("Failed to set GameTooltip text (the provided data doesn't include an item ID)")
 		return
 	end
 
-	local id = itemLink:match("item:(%d+):")
-	assert(id, "Failed to extract item ID from item link (format might have changed?)")
-	processItem(tonumber(id), tooltip)
+	processItem(itemID, tooltip)
 end
 
-_G.TooltipDataProcessor.AddTooltipPostCall(_G.Enum.TooltipDataType.Item, onTooltipSetItem)
+if not _G.TooltipDataProcessor then
+	-- Blizzard hasn't ported the tooltip changes to their classic client, yet?
+else
+	_G.TooltipDataProcessor.AddTooltipPostCall(_G.Enum.TooltipDataType.Item, onTooltipSetItem)
+end

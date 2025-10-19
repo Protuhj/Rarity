@@ -3,6 +3,10 @@ local addonName, addonTable = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local CONSTANTS = addonTable.constants
 
+if LE_EXPANSION_LEVEL_CURRENT < LE_EXPANSION_LEGION then
+	return {}
+end
+
 local legionPets = {
 	-- 7.0
 	["Eye of Inquisition"] = {
@@ -495,7 +499,7 @@ local legionPets = {
 		chance = 10,
 		statisticId = { 5569, 5570 },
 		doNotUpdateToHighestStat = true,
-		coords = { { m = 294, x = 42.5, 45.5, i = true } },
+		coords = { { m = 294, x = 42.5, y = 45.5, i = true } },
 	},
 	["Model D1-BB-L3R"] = {
 		cat = CONSTANTS.ITEM_CATEGORIES.LEGION,
@@ -642,7 +646,7 @@ local legionPets = {
 		chance = 10,
 		statisticId = { 5572, 5571 },
 		doNotUpdateToHighestStat = true,
-		coords = { { m = 294, x = 73.4, 75.4, i = true } },
+		coords = { { m = 294, x = 73.4, y = 75.4, i = true } },
 	},
 	["Vibrating Stone"] = {
 		cat = CONSTANTS.ITEM_CATEGORIES.LEGION,
@@ -852,3 +856,4 @@ local legionPets = {
 }
 
 Rarity.ItemDB.MergeItems(Rarity.ItemDB.pets, legionPets)
+return legionPets
